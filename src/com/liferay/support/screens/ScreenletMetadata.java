@@ -121,8 +121,14 @@ public class ScreenletMetadata {
 
     private void checkForMissingParameters() throws MissingParameterException {
         if (anyParametersMissing(SCREENLET_NAME, SCREENLET_PACKAGE, SCREENLET_VIEW_XML)) {
-            String message = getExceptionMessage();
-            throw new MissingParameterException(message);
+            throw new MissingParameterException(
+                    "Missing at least one parameter from: " +
+                    SCREENLET_NAME +
+                    ", " +
+                    SCREENLET_PACKAGE +
+                    ", " +
+                    SCREENLET_VIEW_XML +
+                    ".");
         }
     }
 
@@ -145,17 +151,6 @@ public class ScreenletMetadata {
 
         if (RegexUtil.findPatternInText(ScreenletMetadata.PKG_END_ALLOWED_CHARACTERS, pkg))
             throw new InvalidPackageNameException("Package ends with invalid characters.");
-    }
-
-    private String getExceptionMessage() {
-
-        return "Missing at least one parameter from: " +
-                SCREENLET_NAME +
-                ", " +
-                SCREENLET_PACKAGE +
-                ", " +
-                SCREENLET_VIEW_XML +
-                ".";
     }
 
     private boolean anyParametersMissing(String... parameters) {

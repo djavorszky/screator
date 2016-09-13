@@ -43,4 +43,8 @@ public class FileUtil {
     }
 
 
+    public static String getFolderPath() {
+        return folderPath;
+    }
+
 }
