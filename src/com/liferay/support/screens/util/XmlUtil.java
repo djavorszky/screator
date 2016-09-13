@@ -27,7 +27,6 @@ public class XmlUtil {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
     }
 
-
     public static boolean isNodeAnElement(Node node) {
         return node.getNodeType() == Node.ELEMENT_NODE;
     }
@@ -35,6 +34,4 @@ public class XmlUtil {
     public static NodeList getChildNodes(Document document) {
         return document.getDocumentElement().getChildNodes();
     }
-
-
 }

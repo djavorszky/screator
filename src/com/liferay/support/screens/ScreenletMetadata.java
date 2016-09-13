@@ -1,6 +1,7 @@
 package com.liferay.support.screens;
 
 import com.liferay.support.screens.util.ConsoleUtil;
+import com.liferay.support.screens.util.RegexUtil;
 import com.liferay.support.screens.util.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -13,7 +14,11 @@ import java.util.HashMap;
 /**
  * Created by javdaniel on 13/09/16.
  */
-public class ScreenletModel {
+public class ScreenletMetadata {
+
+    private static final String PKG_INVALID_CHARACTERS = "[^.a-zA-Z]+";
+    private static final String PKG_START_ALLOWED_CHARACTERS = "^[^a-zA-Z]";
+    private static final String PKG_END_ALLOWED_CHARACTERS = "[^a-zA-Z]$";
 
     private static final String SCREENLET_NAME = "screenlet-name";
     private static final String SCREENLET_PACKAGE = "screenlet-package";
@@ -21,48 +26,60 @@ public class ScreenletModel {
 
     private HashMap<String, String> parameters = new HashMap<>();
 
-    public static ScreenletModel createFromFile(File file) {
+    public static ScreenletMetadata createFromFile(File file) {
         Document doc = null;
-        ScreenletModel model = null;
+        ScreenletMetadata metadata = null;
 
         try {
             doc = XmlUtil.getNormalizedDocumentFromFile(file);
             NodeList children = XmlUtil.getChildNodes(doc);
 
-            model = new ScreenletModel();
+            metadata = new ScreenletMetadata();
             for (int i = 0; i < children.getLength(); i++) {
                 Node node = children.item(i);
                 if (XmlUtil.isNodeAnElement(node)) {
-                    model.addParameter(node.getNodeName(), node.getTextContent());
+                    metadata.addParameter(node.getNodeName(), node.getTextContent());
                 }
             }
 
-            model.validateParameters();
+            metadata.validateParameters();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return model;
+        return metadata;
     }
 
-    public static ScreenletModel createInteractively() throws MissingParameterException, IOException {
+    private void ensureNameEndsWithScreenlet() {
+        String name = getScreenletName();
+
+        if (! name.endsWith("Screenlet")) {
+            setScreenletName(name + "Screenlet");
+        }
+    }
+
+    public static ScreenletMetadata createInteractively() throws MissingParameterException, IOException {
         String name = ConsoleUtil.askForAnswer("Screenlet's name?");
         String pkg = ConsoleUtil.askForAnswer("Screenlet's package?");
         String viewXml = ConsoleUtil.askForAnswer("View xml's name?");
 
-        ScreenletModel model = new ScreenletModel();
+        ScreenletMetadata metadata = new ScreenletMetadata();
 
-        model.setScreenletName(name);
-        model.setScreenletPackage(pkg);
-        model.setScreenletViewXml(viewXml);
+        metadata.setScreenletName(name);
+        metadata.setScreenletPackage(pkg);
+        metadata.setScreenletViewXml(viewXml);
 
-        model.validateParameters();
+        try {
+            metadata.validateParameters();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        return model;
+        return metadata;
     }
 
-    private ScreenletModel() {
+    private ScreenletMetadata() {
 
     }
 
@@ -95,11 +112,39 @@ public class ScreenletModel {
     }
 
 
-    public void validateParameters() throws MissingParameterException {
+    public void validateParameters() throws MissingParameterException, InvalidPackageNameException, IOException {
+        checkForMissingParameters();
+        ensureNameEndsWithScreenlet();
+        validateScreenletPackage();
+        validateScreenletViewXml();
+    }
+
+    private void checkForMissingParameters() throws MissingParameterException {
         if (anyParametersMissing(SCREENLET_NAME, SCREENLET_PACKAGE, SCREENLET_VIEW_XML)) {
             String message = getExceptionMessage();
             throw new MissingParameterException(message);
         }
+    }
+
+    private void validateScreenletViewXml() throws IOException {
+        String filename = getScreenletViewFilename();
+        File file = new File(filename);
+
+        if (!file.exists())
+            throw new IOException("Specified viewfile '" + filename + "' does not exist.");
+    }
+
+    public void validateScreenletPackage() throws InvalidPackageNameException {
+        String pkg = getScreenletPackage();
+
+        if (RegexUtil.findPatternInText(ScreenletMetadata.PKG_INVALID_CHARACTERS, pkg))
+            throw new InvalidPackageNameException("Package name contains invalid characters.");
+
+        if (RegexUtil.findPatternInText(ScreenletMetadata.PKG_START_ALLOWED_CHARACTERS, pkg))
+            throw new InvalidPackageNameException("Package starts with invalid characters.");
+
+        if (RegexUtil.findPatternInText(ScreenletMetadata.PKG_END_ALLOWED_CHARACTERS, pkg))
+            throw new InvalidPackageNameException("Package ends with invalid characters.");
     }
 
     private String getExceptionMessage() {
