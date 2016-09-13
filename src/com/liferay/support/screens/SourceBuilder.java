@@ -1,5 +1,6 @@
 package com.liferay.support.screens;
 
+import com.liferay.support.screens.helper.Screenlet;
 import com.liferay.support.screens.helper.View;
 import com.liferay.support.screens.helper.ViewModel;
 
@@ -11,18 +12,14 @@ import java.util.Map;
  */
 public class SourceBuilder {
 
-    private String screenletName;
-    private String screenletPackage;
-
-
     public void createFileFrames(ScreenletMetadata metadata) {
-        screenletName = metadata.getScreenletName();
-        screenletPackage = metadata.getScreenletPackage();
 
-        ViewModel viewModel = new ViewModel(this);
+        String screenletName = Screenlet.getNameWithoutScreenlet();
+
+        ViewModel viewModel = new ViewModel(screenletName);
         viewModel.createViewModel();
 
-        View view = new View(this);
+        View view = new View(screenletName);
         view.createView();
 
         /*

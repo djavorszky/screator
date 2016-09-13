@@ -10,26 +10,18 @@ import java.util.Map;
 
 public class ViewModel extends TemplateHelper {
 
-    private SourceBuilder sourceBuilder;
+    public ViewModel(String screenletName) {
+        super(screenletName + "ViewModel", screenletName + "ViewModel.java");
 
-    private String interfaceName;
-    private String filename;
-
-    private File viewModelFile;
-
-    public ViewModel(SourceBuilder sourceBuilder) {
-        this.sourceBuilder = sourceBuilder;
-        this.interfaceName = Screenlet.getNameWithoutScreenlet() + "ViewModel";
-        this.filename = interfaceName + ".java";
     }
 
     public void createViewModel() {
-        viewModelFile = FileUtil.createFileOnPackagePath(filename);
+        File viewModelFile = FileUtil.createFileOnPackagePath(filename);
 
         String template = loadTemplate(TEMPLATE_INTERFACE);
 
         addMacroToBeReplaced(PACKAGE, Screenlet.getPackage());
-        addMacroToBeReplaced(NAME, interfaceName);
+        addMacroToBeReplaced(NAME, className);
         addMacroToBeReplaced(IMPLEMENTS, "");
         addMacroToBeReplaced(EXTENDS, "extends BaseViewModel");
         addMacroToBeReplaced(IMPORTS, getViewModelImports());
