@@ -1,12 +1,10 @@
 package com.liferay.support.screens.helper;
 
-import com.liferay.support.screens.SourceBuilder;
 import com.liferay.support.screens.util.FileUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class ViewModel extends TemplateHelper {
 
@@ -24,7 +22,7 @@ public class ViewModel extends TemplateHelper {
         addMacroToBeReplaced(NAME, className);
         addMacroToBeReplaced(IMPLEMENTS, "");
         addMacroToBeReplaced(EXTENDS, "extends BaseViewModel");
-        addMacroToBeReplaced(IMPORTS, getViewModelImports());
+        addMacroToBeReplaced(IMPORTS, getImports());
 
         String processedTemplate = processTemplate(template);
 
@@ -35,9 +33,38 @@ public class ViewModel extends TemplateHelper {
         }
     }
 
+    @Override
+    protected String getPackage() {
+        return null;
+    }
 
-    private String getViewModelImports() {
-        // todo add additional imports
+    @Override
+    protected String getImports() {
         return "import com.liferay.mobile.screens.base.view.BaseViewModel;";
+    }
+
+    @Override
+    protected String getName() {
+        return null;
+    }
+
+    @Override
+    protected String getExtends() {
+        return null;
+    }
+
+    @Override
+    protected String getImplements() {
+        return null;
+    }
+
+    @Override
+    protected String getFunctions() {
+        return null;
+    }
+
+    @Override
+    protected String getClassVariables() {
+        return null;
     }
 }
