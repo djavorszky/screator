@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewModel {
+public class ViewModel extends TemplateHelper {
 
     private SourceBuilder sourceBuilder;
 
@@ -26,30 +26,23 @@ public class ViewModel {
     public void createViewModel() {
         viewModelFile = FileUtil.createFileOnPackagePath(filename);
 
-        String processedTemplate = getProcessedFileContents();
+        String template = loadTemplate(TEMPLATE_INTERFACE);
+
+        addMacroToBeReplaced(PACKAGE, Screenlet.getPackage());
+        addMacroToBeReplaced(NAME, interfaceName);
+        addMacroToBeReplaced(IMPLEMENTS, "");
+        addMacroToBeReplaced(EXTENDS, "extends BaseViewModel");
+        addMacroToBeReplaced(IMPORTS, getViewModelImports());
+
+        String processedTemplate = processTemplate(template);
 
         try {
-            sourceBuilder.writeProcessedTemplateToFile(processedTemplate, viewModelFile);
+            writeProcessedTemplateToFile(processedTemplate, viewModelFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private String getProcessedFileContents() {
-        String template = sourceBuilder.loadTemplate(SourceBuilder.TEMPLATE_INTERFACE);
-
-        Map<String, String> macroMap = new HashMap<String, String>();
-        macroMap.put(SourceBuilder.Macro.PACKAGE, Screenlet.getPackage());
-        macroMap.put(SourceBuilder.Macro.NAME, interfaceName);
-        macroMap.put(SourceBuilder.Macro.IMPLEMENTS, "");
-        macroMap.put(SourceBuilder.Macro.EXTENDS, "extends BaseViewModel");
-        macroMap.put(SourceBuilder.Macro.IMPORTS, getViewModelImports());
-
-        // todo replace functions
-        // todo replace classvariables
-
-        return sourceBuilder.replaceMacrosFromMap(template, macroMap);
-    }
 
     private String getViewModelImports() {
         // todo add additional imports

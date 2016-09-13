@@ -1,7 +1,6 @@
 package com.liferay.support.screens.util;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by javdaniel on 13/09/16.
@@ -61,4 +60,20 @@ public class FileUtil {
         return folderPath;
     }
 
+    public static String readFileContents(String filename) throws IOException {
+
+        BufferedReader reader = new BufferedReader(new FileReader("templates" + File.separator + filename));
+
+        StringBuilder builder = new StringBuilder();
+
+        String line = "";
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+            builder.append(System.lineSeparator());
+        }
+        reader.close();
+
+        return builder.toString();
+
+    }
 }
