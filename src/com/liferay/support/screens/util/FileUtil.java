@@ -1,6 +1,7 @@
 package com.liferay.support.screens.util;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by javdaniel on 13/09/16.
@@ -32,6 +33,19 @@ public class FileUtil {
         }
 
         path.delete();
+    }
+
+    public static File createFileOnPackagePath(String filename) {
+        String folderPath = FileUtil.getFolderPath();
+        File file = new File(folderPath + File.separator + filename);
+
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return file;
     }
 
     private static String getRootFolderFromPath(String folderPath) {

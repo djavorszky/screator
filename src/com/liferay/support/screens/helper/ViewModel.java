@@ -15,18 +15,18 @@ public class ViewModel {
     private SourceBuilder sourceBuilder;
 
     private String interfaceName;
-    private String fileName;
+    private String filename;
 
     private File viewModelFile;
 
     public ViewModel(SourceBuilder sourceBuilder) {
         this.sourceBuilder = sourceBuilder;
         this.interfaceName = Screenlet.getNameWithoutScreenlet() + "ViewModel";
-        this.fileName = interfaceName + ".java";
+        this.filename = interfaceName + ".java";
     }
 
     public void createViewModel() {
-        createFile();
+        viewModelFile = FileUtil.createFileOnPackagePath(filename);
 
         String processedTemplate = getProcessedFileContents();
 
@@ -52,17 +52,6 @@ public class ViewModel {
                 bufferedWriter.close();
         }
 
-    }
-
-    private void createFile() {
-        String folderPath = FileUtil.getFolderPath();
-        viewModelFile = new File(folderPath + File.separator + fileName);
-
-        try {
-            viewModelFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private String getProcessedFileContents() {
