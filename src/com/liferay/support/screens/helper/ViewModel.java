@@ -3,9 +3,7 @@ package com.liferay.support.screens.helper;
 import com.liferay.support.screens.SourceBuilder;
 import com.liferay.support.screens.util.FileUtil;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,27 +29,10 @@ public class ViewModel {
         String processedTemplate = getProcessedFileContents();
 
         try {
-            writeProcessedTemplateToFile(processedTemplate);
+            sourceBuilder.writeProcessedTemplateToFile(processedTemplate, viewModelFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void writeProcessedTemplateToFile(String processedTemplate) throws IOException{
-        FileWriter fileWriter = null;
-        BufferedWriter bufferedWriter = null;
-
-        try {
-            fileWriter = new FileWriter(viewModelFile);
-            bufferedWriter = new BufferedWriter(fileWriter);
-
-            bufferedWriter.write(processedTemplate);
-        }
-        finally {
-            if (bufferedWriter != null)
-                bufferedWriter.close();
-        }
-
     }
 
     private String getProcessedFileContents() {
@@ -71,6 +52,7 @@ public class ViewModel {
     }
 
     private String getViewModelImports() {
+        // todo add additional imports
         return "import com.liferay.mobile.screens.base.view.BaseViewModel;";
     }
 }

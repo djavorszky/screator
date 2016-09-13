@@ -86,6 +86,23 @@ public class SourceBuilder {
         return template;
     }
 
+    public void writeProcessedTemplateToFile(String processedTemplate, File file) throws IOException{
+        FileWriter fileWriter = null;
+        BufferedWriter bufferedWriter = null;
+
+        try {
+            fileWriter = new FileWriter(file);
+            bufferedWriter = new BufferedWriter(fileWriter);
+
+            bufferedWriter.write(processedTemplate);
+        }
+        finally {
+            if (bufferedWriter != null)
+                bufferedWriter.close();
+        }
+
+    }
+
     private String replaceMacroWithValue(String template, String key, String value) {
         return template.replace(key, value);
     }
