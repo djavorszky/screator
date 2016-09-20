@@ -1,6 +1,6 @@
 package com.liferay.support.screens;
 
-import com.liferay.support.screens.helper.Screenlet;
+import com.liferay.support.screens.helper.ScreenletModel;
 import com.liferay.support.screens.util.FileUtil;
 
 import java.io.File;
@@ -24,9 +24,9 @@ public class Main {
             e.printStackTrace();
         }
 
-        Screenlet.setMetadata(screenletMetadata);
+        ScreenletModel.setMetadata(screenletMetadata);
 
-        FileUtil.createFolderStructureFromPackage(Screenlet.getPackage());
+        FileUtil.createFolderStructureFromPackage(ScreenletModel.getPackage());
 
         SourceBuilder sb = new SourceBuilder();
         sb.createFileFrames(screenletMetadata);

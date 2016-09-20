@@ -103,10 +103,12 @@ public abstract class TemplateHelper {
 			sb.append(className);
 			sb.append("<");
 			sb.append(generics[0]);
+			addImport(generics[0]);
 
 			for (int i = 1; i < generics.length; i++) {
-				sb.append(",");
+				sb.append(", ");
 				sb.append(generics[i]);
+				addImport(generics[i]);
 			}
 
 			sb.append(">");
@@ -214,7 +216,7 @@ public abstract class TemplateHelper {
 	}
 
 	public String getPackage() {
-		return Screenlet.getPackage();
+		return ScreenletModel.getPackage();
 	}
 
 	public String getName() {

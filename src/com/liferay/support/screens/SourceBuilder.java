@@ -1,6 +1,6 @@
 package com.liferay.support.screens;
 
-import com.liferay.support.screens.helper.Screenlet;
+import com.liferay.support.screens.helper.ScreenletModel;
 import com.liferay.support.screens.model.*;
 
 /**
@@ -10,7 +10,7 @@ public class SourceBuilder {
 
 	public void createFileFrames(ScreenletMetadata metadata) {
 
-		String screenletName = Screenlet.getNameWithoutScreenlet();
+		String screenletName = ScreenletModel.getNameWithoutScreenlet();
 
 		ViewModel viewModel = new ViewModel(screenletName);
 		viewModel.make();
@@ -26,6 +26,9 @@ public class SourceBuilder {
 
 		InteractorImpl interactorImpl = new InteractorImpl(screenletName);
 		interactorImpl.make();
+
+		Screenlet screenlet = new Screenlet(screenletName);
+		screenlet.make();
 
 		/*
 		* Stuff that I can completely create based on view.xml:

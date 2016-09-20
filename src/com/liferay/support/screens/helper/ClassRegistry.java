@@ -27,6 +27,8 @@ public class ClassRegistry {
 				new ClassMetadata("Interactor", "com.liferay.mobile.screens.base.interactor"));
 		registerClassMetadata("BaseRemoteInteractor",
 				new ClassMetadata("BaseRemoteInteractor", "com.liferay.mobile.screens.base.interactor"));
+		registerClassMetadata("BaseScreenlet",
+				new ClassMetadata("BaseScreenlet", "com.liferay.mobile.screens.base"));
 	}
 
 	public static String getClassPackageByTag(String TAG) {

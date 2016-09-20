@@ -5,7 +5,7 @@ import com.liferay.support.screens.ScreenletMetadata;
 /**
  * Created by javdaniel on 13/09/16.
  */
-public class Screenlet {
+public class ScreenletModel {
 
     private static ScreenletMetadata metadata;
 
@@ -14,7 +14,7 @@ public class Screenlet {
     }
 
     public static void setMetadata(ScreenletMetadata metadata) {
-        Screenlet.metadata = metadata;
+        ScreenletModel.metadata = metadata;
     }
 
     public static String getName() {
