@@ -89,6 +89,33 @@ public abstract class TemplateHelper {
 		extendedClass = className + "<" + generic + ">";
 	}
 
+	public void setExtendedClassWithMultipleGenerics(String className, String... generics) {
+		if (generics.length == 1) {
+			setExtendedClassWithGeneric(className, generics[0]);
+		}
+		else {
+			clearCurrentExtendedClassIfNecessary();
+
+			addImport(className);
+
+			StringBuilder sb = new StringBuilder();
+
+			sb.append(className);
+			sb.append("<");
+			sb.append(generics[0]);
+
+			for (int i = 1; i < generics.length; i++) {
+				sb.append(",");
+				sb.append(generics[i]);
+			}
+
+			sb.append(">");
+
+			extendedClass = sb.toString();
+		}
+
+	}
+
 	public void setExtendedClass(String className) {
 		clearCurrentExtendedClassIfNecessary();
 
