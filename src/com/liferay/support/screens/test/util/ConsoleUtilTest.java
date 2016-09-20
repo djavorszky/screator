@@ -1,16 +1,9 @@
 package com.liferay.support.screens.test.util;
 
 
-import com.liferay.support.screens.util.ConsoleUtil;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
-import static junit.framework.Assert.*;
 
 /**
  * Created by javdaniel on 13/09/16.

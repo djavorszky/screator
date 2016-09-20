@@ -1,6 +1,9 @@
 package com.liferay.support.screens.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Created by javdaniel on 13/09/16.

@@ -148,24 +148,22 @@ public abstract class TemplateHelper {
 		addImport(interfaceName);
 	}
 
-	public String processTemplate(String template) {
-		return replaceMacrosFromMap(template, macroMap);
-	}
+	public abstract void make();
 
-	private String replaceMacrosFromMap(String template, Map<String, String> macroMap) {
-		for (String key : macroMap.keySet()) {
-			String value = macroMap.get(key);
-			if (value != null) {
-				template = replaceMacroWithValue(template, key, value);
-			}
+	public void completeMake() {
+		File viewFile = FileUtil.createFileOnPackagePath(filename);
 
+		String template = loadTemplate(this.template);
+
+		addMacrosToBeReplaced();
+
+		String processedTemplate = processTemplate(template);
+
+		try {
+			writeProcessedTemplateToFile(processedTemplate, viewFile);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
-		return template;
-	}
-
-	private String replaceMacroWithValue(String template, String key, String value) {
-		return template.replace(key, value);
 	}
 
 	public String loadTemplate(int type) {
@@ -185,6 +183,20 @@ public abstract class TemplateHelper {
 		return result;
 	}
 
+	public void addMacrosToBeReplaced() {
+		addMacroToBeReplaced(PACKAGE, getPackage());
+		addMacroToBeReplaced(NAME, getName());
+		addMacroToBeReplaced(IMPLEMENTS, getInterfaces());
+		addMacroToBeReplaced(EXTENDS, getExtends());
+		addMacroToBeReplaced(IMPORTS, getImports());
+		addMacroToBeReplaced(FUNCTIONS, getFunctions());
+		addMacroToBeReplaced(CLASSVARIABLES, getClassVariables());
+	}
+
+	public String processTemplate(String template) {
+		return replaceMacrosFromMap(template, macroMap);
+	}
+
 	public void writeProcessedTemplateToFile(String processedTemplate, File file) throws IOException{
 		FileWriter fileWriter = null;
 		BufferedWriter bufferedWriter = null;
@@ -199,16 +211,6 @@ public abstract class TemplateHelper {
 			if (bufferedWriter != null) bufferedWriter.close();
 		}
 
-	}
-
-	public void addMacrosToBeReplaced() {
-		addMacroToBeReplaced(PACKAGE, getPackage());
-		addMacroToBeReplaced(NAME, getName());
-		addMacroToBeReplaced(IMPLEMENTS, getInterfaces());
-		addMacroToBeReplaced(EXTENDS, getExtends());
-		addMacroToBeReplaced(IMPORTS, getImports());
-		addMacroToBeReplaced(FUNCTIONS, getFunctions());
-		addMacroToBeReplaced(CLASSVARIABLES, getClassVariables());
 	}
 
 	public void addMacroToBeReplaced(String macro, String value) {
@@ -279,22 +281,20 @@ public abstract class TemplateHelper {
 		return sb.toString();
 	}
 
-	public abstract void make();
+	private String replaceMacrosFromMap(String template, Map<String, String> macroMap) {
+		for (String key : macroMap.keySet()) {
+			String value = macroMap.get(key);
+			if (value != null) {
+				template = replaceMacroWithValue(template, key, value);
+			}
 
-	public void completeMake() {
-		File viewFile = FileUtil.createFileOnPackagePath(filename);
-
-		String template = loadTemplate(this.template);
-
-		addMacrosToBeReplaced();
-
-		String processedTemplate = processTemplate(template);
-
-		try {
-			writeProcessedTemplateToFile(processedTemplate, viewFile);
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+
+		return template;
+	}
+
+	private String replaceMacroWithValue(String template, String key, String value) {
+		return template.replace(key, value);
 	}
 
 }
