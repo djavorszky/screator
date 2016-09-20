@@ -4,9 +4,6 @@ import com.liferay.support.screens.helper.Screenlet;
 import com.liferay.support.screens.helper.View;
 import com.liferay.support.screens.helper.ViewModel;
 
-import java.io.*;
-import java.util.Map;
-
 /**
  * Created by javdaniel on 13/09/16.
  */
@@ -17,10 +14,10 @@ public class SourceBuilder {
         String screenletName = Screenlet.getNameWithoutScreenlet();
 
         ViewModel viewModel = new ViewModel(screenletName);
-        viewModel.createViewModel();
+        viewModel.make();
 
         View view = new View(screenletName);
-        view.createView();
+        view.make();
 
         /*
         * Stuff that I can completely create based on view.xml:

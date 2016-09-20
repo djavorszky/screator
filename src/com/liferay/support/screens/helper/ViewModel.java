@@ -5,66 +5,40 @@ import com.liferay.support.screens.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
 
-
 public class ViewModel extends TemplateHelper {
 
-    public ViewModel(String screenletName) {
-        super(screenletName + "ViewModel", screenletName + "ViewModel.java");
+	public static final String TAG = "ViewModel";
 
-    }
+	public ViewModel(String screenletName) {
+		super(screenletName + "ViewModel", screenletName + "ViewModel.java");
+	}
 
-    public void createViewModel() {
-        File viewModelFile = FileUtil.createFileOnPackagePath(filename);
+	@Override
+	public void make() {
+		File viewModelFile = FileUtil.createFileOnPackagePath(filename);
 
-        String template = loadTemplate(TEMPLATE_INTERFACE);
+		setExtendedClass("BaseViewModel");
 
-        addMacroToBeReplaced(PACKAGE, Screenlet.getPackage());
-        addMacroToBeReplaced(NAME, className);
-        addMacroToBeReplaced(IMPLEMENTS, "");
-        addMacroToBeReplaced(EXTENDS, "extends BaseViewModel");
-        addMacroToBeReplaced(IMPORTS, getImports());
+		// TODO add functions and class variables.
 
-        String processedTemplate = processTemplate(template);
+		String template = loadTemplate(TEMPLATE_INTERFACE);
 
-        try {
-            writeProcessedTemplateToFile(processedTemplate, viewModelFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+		addMacrosToBeReplaced();
 
-    @Override
-    protected String getPackage() {
-        return null;
-    }
+		String processedTemplate = processTemplate(template);
 
-    @Override
-    protected String getImports() {
-        return "import com.liferay.mobile.screens.base.view.BaseViewModel;";
-    }
+		try {
+			writeProcessedTemplateToFile(processedTemplate, viewModelFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    @Override
-    protected String getName() {
-        return null;
-    }
+		ClassRegistry.addClass(TAG, getName(), getPackage());
+	}
 
-    @Override
-    protected String getExtends() {
-        return null;
-    }
+	@Override
+	protected String getFunctions() {
+		return null;
+	}
 
-    @Override
-    protected String getImplements() {
-        return null;
-    }
-
-    @Override
-    protected String getFunctions() {
-        return null;
-    }
-
-    @Override
-    protected String getClassVariables() {
-        return null;
-    }
 }
