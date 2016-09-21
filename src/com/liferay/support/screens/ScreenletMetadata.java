@@ -62,13 +62,13 @@ public class ScreenletMetadata {
     public static ScreenletMetadata createInteractively() throws MissingParameterException, IOException {
         String name = ConsoleUtil.askForAnswer("Screenlet's name?");
         String pkg = ConsoleUtil.askForAnswer("Screenlet's package?");
-        String viewXml = ConsoleUtil.askForAnswer("View xml's name?");
+        //String viewXml = ConsoleUtil.askForAnswer("View xml's name?");
 
         ScreenletMetadata metadata = new ScreenletMetadata();
 
         metadata.setScreenletName(name);
         metadata.setScreenletPackage(pkg);
-        metadata.setScreenletViewXml(viewXml);
+        //metadata.setScreenletViewXml(viewXml);
 
         try {
             metadata.validateParameters();
@@ -116,7 +116,7 @@ public class ScreenletMetadata {
         checkForMissingParameters();
         ensureNameEndsWithScreenlet();
         validateScreenletPackage();
-        validateScreenletViewXml();
+        //validateScreenletViewXml();
     }
 
     private void checkForMissingParameters() throws MissingParameterException {
@@ -127,7 +127,7 @@ public class ScreenletMetadata {
                     ", " +
                     SCREENLET_PACKAGE +
                     ", " +
-                    SCREENLET_VIEW_XML +
+                    //SCREENLET_VIEW_XML +
                     ".");
         }
     }
