@@ -1,9 +1,10 @@
 package com.liferay.support.screens.model;
 
 import com.liferay.support.screens.helper.ClassRegistry;
-import com.liferay.support.screens.helper.TemplateHelper;
+import com.liferay.support.screens.helper.FunctionMetadata;
+import com.liferay.support.screens.helper.Template;
 
-public class ViewModel extends TemplateHelper {
+public class ViewModel extends Template {
 
 	public static final String TAG = "ViewModel";
 
@@ -16,10 +17,8 @@ public class ViewModel extends TemplateHelper {
 		setTemplate(TEMPLATE_INTERFACE);
 		setExtendedClass("BaseViewModel");
 
-		// TODO add functions and class variables.
 		ClassRegistry.addClass(TAG, getName(), getPackage());
 
-		super.completeMake();
 	}
 
 	@Override

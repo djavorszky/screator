@@ -1,12 +1,12 @@
 package com.liferay.support.screens.model;
 
 import com.liferay.support.screens.helper.ClassRegistry;
-import com.liferay.support.screens.helper.TemplateHelper;
+import com.liferay.support.screens.helper.Template;
 
 /**
  * Created by javdaniel on 20/09/16.
  */
-public class InteractorImpl extends TemplateHelper {
+public class InteractorImpl extends Template {
 
 	public InteractorImpl(String screenletName) {
 		super(screenletName + "InteractorImpl", screenletName + "InteractorImpl.java");
@@ -24,6 +24,5 @@ public class InteractorImpl extends TemplateHelper {
 		setExtendedClassWithGeneric("BaseRemoteInteractor", ClassRegistry.getClassNameByTag(Listener.TAG));
 		addInterface(ClassRegistry.getClassNameByTag(Interactor.TAG));
 
-		super.completeMake();
 	}
 }

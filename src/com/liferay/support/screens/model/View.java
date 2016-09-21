@@ -1,13 +1,13 @@
 package com.liferay.support.screens.model;
 
 import com.liferay.support.screens.helper.ClassRegistry;
-import com.liferay.support.screens.helper.TemplateHelper;
+import com.liferay.support.screens.helper.Template;
 
 
 /**
  * Created by javdaniel on 13/09/16.
  */
-public class View extends TemplateHelper {
+public class View extends Template {
 
 	public static final String TAG = "View";
 
@@ -27,7 +27,6 @@ public class View extends TemplateHelper {
 
 		ClassRegistry.addClass(TAG, getName(), getPackage());
 
-		super.completeMake();
 	}
 
 	@Override

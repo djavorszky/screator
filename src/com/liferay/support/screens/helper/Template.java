@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Created by javdaniel on 13/09/16.
  */
-public abstract class TemplateHelper {
+public abstract class Template {
 
 	public static final int TEMPLATE_CLASS = 0;
 	public static final int TEMPLATE_INTERFACE = 1;
@@ -36,9 +36,10 @@ public abstract class TemplateHelper {
 	private List<String> interfaces = new ArrayList<>();
 	private Map<String, String> classVariables = new HashMap<>();
 	private Map<String, String> macroMap = new HashMap<>();
+	private List<String> unimportedClasses = new ArrayList<>();
 	private int template;
 
-	public TemplateHelper(String className, String filename) {
+	public Template(String className, String filename) {
 		this.className = className;
 		this.filename = filename;
 	}
@@ -65,10 +66,22 @@ public abstract class TemplateHelper {
 	public void addImport(String className) {
 		String packageName = ClassRegistry.getClassPackageByName(className);
 
-		String importLine = packageName + "." + className;
+		if (packageName != null) {
+			String importLine = packageName + "." + className;
 
-		if (! imports.contains(importLine))
-			imports.add(importLine);
+			if (! imports.contains(importLine))
+				imports.add(importLine);
+		}
+		else {
+			if (unimportedClasses.contains(className)) {
+				System.out.println("Could not add '" + className + "' as import. Please add it manually.");
+			}
+			else {
+				System.out.println("Could not add '" + className + "' as import. Will try again once more.");
+				unimportedClasses.add(className);
+			}
+
+		}
 	}
 
 	public void setTemplate(int template) {
@@ -150,7 +163,7 @@ public abstract class TemplateHelper {
 
 	public abstract void make();
 
-	public void completeMake() {
+	public void createFileFromTemplate() {
 		File viewFile = FileUtil.createFileOnPackagePath(filename);
 
 		String template = loadTemplate(this.template);
@@ -256,7 +269,7 @@ public abstract class TemplateHelper {
 			sb.append("import ");
 			sb.append(clazz);
 			sb.append(";");
-			sb.append(System.getProperty("line.separator"));
+			sb.append(System.lineSeparator());
 		}
 
 		return sb.toString();
@@ -275,7 +288,7 @@ public abstract class TemplateHelper {
 			sb.append(" ");
 			sb.append(varName);
 			sb.append(";");
-			sb.append(System.getProperty("line.separator"));
+			sb.append(System.lineSeparator());
 		}
 
 		return sb.toString();
@@ -297,4 +310,9 @@ public abstract class TemplateHelper {
 		return template.replace(key, value);
 	}
 
+	public void finishImports() {
+		for (String className : unimportedClasses) {
+			addImport(className);
+		}
+	}
 }

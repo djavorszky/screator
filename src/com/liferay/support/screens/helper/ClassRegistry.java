@@ -32,12 +32,20 @@ public class ClassRegistry {
 	}
 
 	public static String getClassPackageByTag(String TAG) {
-		return getClassMetadataIfExistsByTag(TAG).getClassPackage();
+		ClassMetadata classMetadata = getClassMetadataIfExistsByTag(TAG);
+
+		return classMetadata != null ? classMetadata.getClassPackage() : null;
+
 	}
 
 	public static String getClassPackageByName(String className) {
 		String tag = getTagFromClassName(className);
-		return getClassMetadataIfExistsByTag(tag).getClassPackage();
+
+		ClassMetadata classMetadata = getClassMetadataIfExistsByTag(tag);
+
+		if (tag == null || classMetadata == null) return null;
+
+		return classMetadata.getClassPackage();
 	}
 
 	public static String getTagFromClassName(String className) {
@@ -46,11 +54,12 @@ public class ClassRegistry {
 
 	private static ClassMetadata getClassMetadataIfExistsByTag(String TAG) {
 
-		ClassMetadata classMetadata = null;
+		ClassMetadata classMetadata;
 		try {
 			classMetadata = getClassMetadata(TAG);
 		} catch (UnknownClassException e) {
 			e.printStackTrace();
+			return null;
 		}
 
 		return classMetadata;
@@ -67,7 +76,11 @@ public class ClassRegistry {
 	}
 
 	public static String getClassNameByTag(String TAG) {
-		return getClassMetadataIfExistsByTag(TAG).getClassName();
+		ClassMetadata classMetadata = getClassMetadataIfExistsByTag(TAG);
+
+		if (TAG == null || classMetadata == null) return null;
+
+		return classMetadata.getClassName();
 	}
 
 	public static void addClass(String TAG, String className, String packageName) {

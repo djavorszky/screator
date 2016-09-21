@@ -1,12 +1,12 @@
 package com.liferay.support.screens.model;
 
 import com.liferay.support.screens.helper.ClassRegistry;
-import com.liferay.support.screens.helper.TemplateHelper;
+import com.liferay.support.screens.helper.Template;
 
 /**
  * Created by javdaniel on 20/09/16.
  */
-public class Listener extends TemplateHelper {
+public class Listener extends Template {
 
 	public static final String TAG = "Listener";
 
@@ -24,6 +24,5 @@ public class Listener extends TemplateHelper {
 		setTemplate(TEMPLATE_INTERFACE);
 		ClassRegistry.addClass(TAG, getName(), getPackage());
 
-		super.completeMake();
 	}
 }

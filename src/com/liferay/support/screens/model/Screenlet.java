@@ -1,12 +1,14 @@
 package com.liferay.support.screens.model;
 
 import com.liferay.support.screens.helper.ClassRegistry;
-import com.liferay.support.screens.helper.TemplateHelper;
+import com.liferay.support.screens.helper.Template;
 
 /**
  * Created by javdaniel on 20/09/16.
  */
-public class Screenlet extends TemplateHelper {
+public class Screenlet extends Template {
+
+	public static final String TAG = "Screenlet";
 
 	public Screenlet(String screenletName) {
 		super(screenletName + "Screenlet", screenletName + "Screenlet.java");
@@ -27,6 +29,7 @@ public class Screenlet extends TemplateHelper {
 
 		addInterface(ClassRegistry.getClassNameByTag(Listener.TAG));
 
-		super.completeMake();
+		ClassRegistry.addClass(TAG, getName(), getPackage());
+
 	}
 }
